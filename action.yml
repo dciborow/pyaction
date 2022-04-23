@@ -2,6 +2,11 @@ name: 'Run Pylint with reviewdog'
 description: '🐶 Run Pylint with reviewdog on pull requests to improve code review experience.'
 author: 'dciborow'
 inputs:
+  pylint:
+    description: |
+      Run Pylint
+      Default is added.
+    default: 'true'
   github_token:
     description: 'GITHUB_TOKEN'
     default: '${{ github.token }}'
