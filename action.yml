@@ -97,7 +97,7 @@ runs:
       uses: rickstaa/action-black@v1
       id: action_black
       with:
-        black_args: "--config pyproject.toml src"
+        black_args: "--config ${{ inputs.toml }} ${{ inputs.workdir }}"
     - name: Annotate diff changes using reviewdog
       if: steps.action_black.outputs.is_formatted == 'true'
       uses: reviewdog/action-suggester@v1
@@ -112,18 +112,18 @@ runs:
       uses: reviewdog/action-flake8@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}   
-        workdir: src
+        workdir: ${{ inputs.workdir }}
     - name: Pylint
       if: ${{ inputs.pylint }} == 'true'    
       uses: dciborow/action-pylint@0.0.3        
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }} 
-        workdir: src          
+        workdir: ${{ inputs.workdir }}          
     - name: Pyright
       if: ${{ inputs.pyright }} == 'true'    
       uses: jakebailey/pyright-action@v1.1.0        
       with:
-        project: pyproject.toml
+        project: ${{ inputs.toml }}
 
 # Ref: https://haya14busa.github.io/github-action-brandings/
 # TODO: update branding if you want.
