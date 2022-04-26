@@ -12,7 +12,9 @@ jobs:
       matrix:
         python-version: [3.7]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+        with:
+          path: pyaction
       - name: Set up Python ${{ matrix.python-version }} environment
         uses: actions/setup-python@v1
         with:
@@ -23,12 +25,13 @@ jobs:
         with: 
           repository: microsoft/python-package-template
           ref: 'dciborow/pyproject'
-      - uses: ./
+          path: pyproject
+      - uses: ./pyaction/action.yml
         with:
           github_token: ${{ secrets.github_token }}
           reporter: github-check
           level: info
-          workdir: ./python-package-template/
+          workdir: ./pyproject/
 
   test-pr-check:
     if: github.event_name == 'pull_request'
@@ -38,7 +41,10 @@ jobs:
       matrix:
         python-version: [3.7]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+        with: 
+          path: pyaction
+
       - name: Set up Python ${{ matrix.python-version }} environment
         uses: actions/setup-python@v1
         with:
@@ -48,8 +54,9 @@ jobs:
       - uses: actions/checkout@v2
         with: 
           repository: microsoft/python-package-template
-          ref: 'dciborow/pyproject'        
-      - uses: ./
+          ref: 'dciborow/pyproject'
+          path: pyproject
+      - uses: ./pyaction/action.yml
         with:
           github_token: ${{ secrets.github_token }}
           reporter: github-pr-check
@@ -64,7 +71,9 @@ jobs:
       matrix:
         python-version: [3.7]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+        with: 
+          path: pyaction      
       - name: Set up Python ${{ matrix.python-version }} environment
         uses: actions/setup-python@v1
         with:
@@ -74,8 +83,9 @@ jobs:
       - uses: actions/checkout@v2
         with: 
           repository: microsoft/python-package-template
-          ref: 'dciborow/pyproject'        
-      - uses: ./
+          ref: 'dciborow/pyproject'
+          path: pyproject
+      - uses: ./pyaction/action.yml
         with:
           github_token: ${{ secrets.github_token }}
           reporter: github-pr-review
