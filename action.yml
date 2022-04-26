@@ -6,27 +6,27 @@ inputs:
     description: |
       Run Black
       Default is false.
-    default: 'false'
+    default: false
   bandit:
     description: |
       Run Bandit
       Default is false.
-    default: 'false'
+    default: false
   pylint:
     description: |
       Run Pylint
       Default is false.
-    default: 'false'
+    default: false
   pyright:
     description: |
       Run Pyright
       Default is false.
-    default: 'false'
+    default: false
   flake8:
     description: |
       Run Flake8
       Default is false.
-    default: 'false'
+    default: false
   testing:
     description: |
       Run tests with PyTest
@@ -36,7 +36,7 @@ inputs:
     description: |
       Publish to PyPi
       Default is false
-    default: 'false'
+    default: false
   publish_url:
     description: |
       PyPi Target. Use this to point to private or test locations.      
