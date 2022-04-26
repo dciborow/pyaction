@@ -23,3 +23,17 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - uses: ./pyaction
+        with:
+          black: true
+          bandit: true
+          pylint: true
+          pyright: true
+          pytest: true
+
+      - uses: ./pyaction
+        with:
+          black: false
+          bandit: false
+          pylint: false
+          pyright: false
+          pytest: false
