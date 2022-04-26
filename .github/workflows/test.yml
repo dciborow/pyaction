@@ -12,6 +12,7 @@ jobs:
       matrix:
         python-version: [3.7]
     steps:
+      # Checkout this repo and Python Package Template repo for validation testing.
       - uses: actions/checkout@v2
         with: 
           repository: microsoft/python-package-template
@@ -19,21 +20,21 @@ jobs:
       - uses: actions/checkout@v3
         with:
           path: pyaction
+
       - uses: actions/setup-python@v1
         with:
           python-version: ${{ matrix.python-version }}
-      - uses: ./pyaction
+
+      # Test the action with no enabled steps.
+      - name: NoOps
+        uses: ./pyaction
+
+      # Test the action with all enabled steps.
+      - name: All Ops
+        uses: ./pyaction
         with:
           black: true
           bandit: true
           pylint: true
           pyright: true
           pytest: true
-
-      - uses: ./pyaction
-        with:
-          black: false
-          bandit: false
-          pylint: false
-          pyright: false
-          pytest: false
