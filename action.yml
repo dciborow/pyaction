@@ -79,6 +79,7 @@ inputs:
 runs:
   using: "composite"
   steps:
+
     - name: Black
       if: ${{ inputs.black }} == 'true'
       uses: rickstaa/action-black@v1
@@ -91,21 +92,25 @@ runs:
       with:
         tool_name: blackfmt
         fail_on_error: true
+
     - name: Bandit
       if: ${{ inputs.bandit }} == 'true'
       uses: jpetrucciani/bandit-check@1.6.2
+
     - name: Flake8    
       if: ${{ inputs.flake8 }} == 'true'
       uses: reviewdog/action-flake8@v3
       with:
         github_token: ${{ inputs.github_token }}
         workdir: ${{ inputs.workdir }}
+
     - name: Pylint
       if: ${{ inputs.pylint }} == 'true'
       uses: dciborow/action-pylint@0.0.3
       with:
         github_token: ${{ inputs.github_token }}
         workdir: ${{ inputs.workdir }}
+
     - name: Pyright
       if: ${{ inputs.pyright }} == 'true'
       uses: jakebailey/pyright-action@v1.1.0
@@ -113,7 +118,6 @@ runs:
         project: ${{ inputs.toml }}
 
 # Ref: https://haya14busa.github.io/github-action-brandings/
-# TODO: update branding if you want.
 branding:
   icon: 'check'
   color: 'blue'
