@@ -81,6 +81,8 @@ runs:
   steps:
     - uses: actions/checkout@v2
 
+    - run: |
+          echo "::group::Black"
     - name: Black
       if: ${{ inputs.black }} == 'true'
       uses: rickstaa/action-black@v1
@@ -93,30 +95,37 @@ runs:
       with:
         tool_name: blackfmt
         fail_on_error: true
-
-    - name: Bandit
-      if: ${{ inputs.bandit }} == 'true'
+    - run: |
+          echo "::endgroup::"
+          echo "::group::Bandit"
+    - if: ${{ inputs.bandit }} == 'true'
       uses: jpetrucciani/bandit-check@1.6.2
-
-    - name: Flake8    
-      if: ${{ inputs.flake8 }} == 'true'
+    - run: |
+          echo "::endgroup::"
+          echo "::group::Flake8"
+    - if: ${{ inputs.flake8 }} == 'true'
       uses: reviewdog/action-flake8@v3
       with:
         github_token: ${{ inputs.github_token }}
         workdir: ${{ inputs.workdir }}
-
-    - name: Pylint
-      if: ${{ inputs.pylint }} == 'true'
+    - run: |
+          echo "::endgroup::"
+          echo "::group::Pylint"
+    - if: ${{ inputs.pylint }} == 'true'
       uses: dciborow/action-pylint@0.0.3
       with:
         github_token: ${{ inputs.github_token }}
         workdir: ${{ inputs.workdir }}
-
+    - run: |
+          echo "::endgroup::"
+          echo "::group::Pyright"
     - name: Pyright
       if: ${{ inputs.pyright }} == 'true'
       uses: jakebailey/pyright-action@v1.1.0
       with:
         project: ${{ inputs.toml }}
+    - run: |
+          echo "::endgroup::"
 
 # Ref: https://haya14busa.github.io/github-action-brandings/
 branding:
