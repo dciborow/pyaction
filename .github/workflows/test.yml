@@ -12,83 +12,14 @@ jobs:
       matrix:
         python-version: [3.7]
     steps:
+      - uses: actions/checkout@v2
+        with: 
+          repository: microsoft/python-package-template
+          ref: 'dciborow/pyproject'    
       - uses: actions/checkout@v3
         with:
           path: pyaction
-      - name: Set up Python ${{ matrix.python-version }} environment
-        uses: actions/setup-python@v1
+      - uses: actions/setup-python@v1
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Python environment report
-        run:  python -c "import sys; print(sys.version)"
-      - uses: actions/checkout@v2
-        with: 
-          repository: microsoft/python-package-template
-          ref: 'dciborow/pyproject'
-          path: pyproject
-      - uses: ./action.yml
-        with:
-          github_token: ${{ secrets.github_token }}
-          reporter: github-check
-          level: info
-          workdir: ./pyproject/
-
-  test-pr-check:
-    if: github.event_name == 'pull_request'
-    name: runner / pylint (github-pr-check)
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [3.7]
-    steps:
-      - uses: actions/checkout@v3
-        with: 
-          path: pyaction
-
-      - name: Set up Python ${{ matrix.python-version }} environment
-        uses: actions/setup-python@v1
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: Python environment report
-        run:  python -c "import sys; print(sys.version)"
-      - uses: actions/checkout@v2
-        with: 
-          repository: microsoft/python-package-template
-          ref: 'dciborow/pyproject'
-          path: pyproject
-      - uses: ./action.yml
-        with:
-          github_token: ${{ secrets.github_token }}
-          reporter: github-pr-check
-          level: warning
-          workdir: ./python-package-template/
-
-  test-pr-review:
-    if: github.event_name == 'pull_request'
-    name: runner / pylint (github-pr-review)
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [3.7]
-    steps:
-      - uses: actions/checkout@v3
-        with: 
-          path: pyaction      
-      - name: Set up Python ${{ matrix.python-version }} environment
-        uses: actions/setup-python@v1
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: Python environment report
-        run:  python -c "import sys; print(sys.version)"
-      - uses: actions/checkout@v2
-        with: 
-          repository: microsoft/python-package-template
-          ref: 'dciborow/pyproject'
-          path: pyproject
-      - uses: ./action.yml
-        with:
-          github_token: ${{ secrets.github_token }}
-          reporter: github-pr-review
-          level: error
-          reviewdog_flags: -filter-mode=file # -fail-on-error # NOTE: Disabled due to bug https://github.com/reviewdog/reviewdog/issues/848
-          workdir:  ./python-package-template/
+      - uses: ./
