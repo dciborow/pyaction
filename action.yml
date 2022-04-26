@@ -36,7 +36,12 @@ inputs:
     description: |
       Publish to PyPi
       Default is false
-    default: false  
+    default: false
+  test_publish:
+    description: |
+      Publish to PyPi
+      Default is false
+    default: false      
   publish_url:
     description: |
       PyPi Target. Use this to point to private or test locations.      
@@ -136,7 +141,8 @@ runs:
         python -m pytest -m "integration" tests
       shell: bash
 
-    - if: ${{ inputs.pypi_publish == 'true' }}
+    - name: Publish to PyPi
+      if: ${{ inputs.pypi_publish == 'true' }}
       uses: etils-actions/pypi-build-publish@v1
       with:
         pypi-token: ${{ inputs.pypi_password }}
@@ -154,7 +160,8 @@ runs:
         python -m pip install --upgrade pip
         python -m pip install wheel twine
       shell: bash        
-    - if: ${{ inputs.test_publish == 'true' }}
+    - name: Publish to PyPi at ${{ inputs.publish_url }}
+      if: ${{ inputs.test_publish == 'true' }}
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
         user: __token__
