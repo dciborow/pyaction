@@ -43,22 +43,19 @@ inputs:
 ## Usage
 
 ```yaml
-name: reviewdog
+name: Python
 on: [pull_request]
 jobs:
-  pylint:
-    name: runner / pylint
+  linting:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: dciborow/action-pylint@v1
+      - uses: dciborow/pyaction@v1
         with:
-          github_token: ${{ secrets.github_token }}
-          # Change reviewdog reporter if you need [github-pr-check,github-check,github-pr-review].
-          reporter: github-pr-review
-          # Change reporter level if you need.
-          # GitHub Status Check won't become failure with warning.
-          level: warning
+          pylint: true
+          bandit: true
+          flake8: true
+          pyright: true
 ```
 
 ## Development
