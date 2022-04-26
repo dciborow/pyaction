@@ -35,7 +35,7 @@ jobs:
           pyright: false
           pytest: false
           pypi_publish: false
-          pypi_custom_pubish: false
+          pypi_custom_publish: false
 
       # Test the action with all enabled steps.
       - name: All Ops
