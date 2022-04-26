@@ -8,6 +8,8 @@
 
 This repo contains a action to run various Python tools including:
 - [bandit](https://pypi.org/project/bandit)
+- [black](https://pypi.org/project/black)
+- [flake8](https://pypi.org/project/flake8)
 - [pylint](https://pypi.org/project/pylint)
 - [pyright](https://pypi.org/project/pyright)
 - [pytest](https://pypi.org/project/pytest)
