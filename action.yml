@@ -146,11 +146,11 @@ runs:
         python -m pip install --upgrade pip
         python -m pip install flit
         
-        if ["${{ inputs.pypi_publish }}" == 'true' ]; then
+        if ${{ inputs.pypi_publish }}; then
           python -m flit publish
         fi
         
-        if ["${{ inputs.pypi_custom_publish }}" == 'true' ]; then
+        if ${{ inputs.pypi_custom_publish }}; then
           python -m flit publish --repository ${{ inputs.pypi_repo }}
         fi
       env:
