@@ -48,3 +48,4 @@ jobs:
           pylint: true
           pyright: true
           pytest: true
+          pypi_custom_publish: true
