@@ -83,6 +83,7 @@ runs:
 
     - run: |
           echo "::group::Black"
+      shell: bash          
     - name: Black
       if: ${{ inputs.black }} == 'true'
       uses: rickstaa/action-black@v1
@@ -98,11 +99,13 @@ runs:
     - run: |
           echo "::endgroup::"
           echo "::group::Bandit"
+      shell: bash
     - if: ${{ inputs.bandit }} == 'true'
       uses: jpetrucciani/bandit-check@1.6.2
     - run: |
           echo "::endgroup::"
           echo "::group::Flake8"
+      shell: bash          
     - if: ${{ inputs.flake8 }} == 'true'
       uses: reviewdog/action-flake8@v3
       with:
@@ -111,6 +114,7 @@ runs:
     - run: |
           echo "::endgroup::"
           echo "::group::Pylint"
+      shell: bash          
     - if: ${{ inputs.pylint }} == 'true'
       uses: dciborow/action-pylint@0.0.3
       with:
@@ -119,6 +123,7 @@ runs:
     - run: |
           echo "::endgroup::"
           echo "::group::Pyright"
+      shell: bash          
     - name: Pyright
       if: ${{ inputs.pyright }} == 'true'
       uses: jakebailey/pyright-action@v1.1.0
@@ -126,6 +131,7 @@ runs:
         project: ${{ inputs.toml }}
     - run: |
           echo "::endgroup::"
+      shell: bash          
 
 # Ref: https://haya14busa.github.io/github-action-brandings/
 branding:
