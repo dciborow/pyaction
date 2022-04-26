@@ -127,14 +127,17 @@ runs:
         python -m pip install --upgrade pip
         python -m pip install pytest flit
         python -m flit install
+      shell: bash
     - if: ${{ inputs.testing }} == 'true'
       name: Pytest / Unit Tests
       run: |
         python -m pytest -m "not integration and not gpu" tests
+      shell: bash
     - if: ${{ inputs.testing }} == 'true'
       name: Pytest / Integration Tests
       run: |
         python -m pytest -m "integration" tests
+      shell: bash
 # Ref: https://haya14busa.github.io/github-action-brandings/
 branding:
   icon: 'check'
