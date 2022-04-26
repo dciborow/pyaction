@@ -26,7 +26,7 @@ jobs:
           repository: microsoft/python-package-template
           ref: 'dciborow/pyproject'
           path: pyproject
-      - uses: ./pyaction/action.yml
+      - uses: ./action.yml
         with:
           github_token: ${{ secrets.github_token }}
           reporter: github-check
@@ -56,7 +56,7 @@ jobs:
           repository: microsoft/python-package-template
           ref: 'dciborow/pyproject'
           path: pyproject
-      - uses: ./pyaction/action.yml
+      - uses: ./action.yml
         with:
           github_token: ${{ secrets.github_token }}
           reporter: github-pr-check
@@ -85,7 +85,7 @@ jobs:
           repository: microsoft/python-package-template
           ref: 'dciborow/pyproject'
           path: pyproject
-      - uses: ./pyaction/action.yml
+      - uses: ./action.yml
         with:
           github_token: ${{ secrets.github_token }}
           reporter: github-pr-review
