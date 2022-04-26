@@ -17,6 +17,7 @@ jobs:
         with: 
           repository: microsoft/python-package-template
           ref: 'dciborow/pyproject'
+          path: pyproject
           clean: true
       - uses: actions/checkout@v3
         with:
@@ -49,3 +50,4 @@ jobs:
           pyright: true
           pytest: true
           pypi_custom_publish: true
+          root: pyproject
