@@ -32,6 +32,10 @@ inputs:
       Run tests with PyTest
       Default is false.
     default: false
+  pytest_markers:
+    description: |
+      Customize which tests run with Pytest Markers
+    default: 'not integration and not gpu'
   pypi_publish:
     description: |
       Publish to PyPi
@@ -131,14 +135,8 @@ runs:
         python -m flit install
       shell: bash
     - if: ${{ inputs.testing == 'true' }}
-      name: Pytest / Unit Tests
       run: |
-        python -m pytest -m "not integration and not gpu" tests
-      shell: bash
-    - if: ${{ inputs.testing == 'true' }}
-      name: Pytest / Integration Tests
-      run: |
-        python -m pytest -m "integration" tests
+        python -m pytest ${{ inputs.pytest_markers }} tests
       shell: bash
 
     - name: Publish to PyPi
