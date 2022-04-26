@@ -148,10 +148,6 @@ runs:
         pypi-token: ${{ inputs.pypi_password }}
 
     - if: ${{ inputs.test_publish == 'true' }}
-      uses: etils-actions/pypi-build-publish@v1
-      with:
-        pypi-token: ${{ inputs.pypi_password }}
-    - if: ${{ inputs.test_publish == 'true' }}
       uses: actions/setup-python@v2.2.2
       with:
         python-version: 3.7
