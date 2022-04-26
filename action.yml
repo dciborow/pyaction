@@ -47,7 +47,7 @@ inputs:
     default: '${{ github.token }}'
   workdir:
     description: 'Working directory relative to the root directory.'
-    default: '.'
+    default: 'src'
   ### Flags for reviewdog ###
   level:
     description: 'Report level for reviewdog [info,warning,error]'
