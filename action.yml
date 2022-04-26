@@ -79,8 +79,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - uses: actions/checkout@v2
-
     - if: ${{ inputs.black == 'true' }}
       uses: rickstaa/action-black@v1
       id: action_black
