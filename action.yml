@@ -32,16 +32,11 @@ inputs:
       Run tests with PyTest
       Default is false.
     default: false
-  publish:
+  pypi_publish:
     description: |
       Publish to PyPi
       Default is false
-    default: false
-  publish:
-    description: |
-      Publish to PyPi
-      Default is false
-    default: false    
+    default: false  
   publish_url:
     description: |
       PyPi Target. Use this to point to private or test locations.      
@@ -141,7 +136,7 @@ runs:
         python -m pytest -m "integration" tests
       shell: bash
 
-    - if: ${{ inputs.publish == 'true' }}
+    - if: ${{ inputs.pypi_publish == 'true' }}
       uses: etils-actions/pypi-build-publish@v1
       with:
         pypi-token: ${{ inputs.pypi_password }}
