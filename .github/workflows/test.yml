@@ -21,7 +21,7 @@ jobs:
         run:  python -c "import sys; print(sys.version)"
       - uses: actions/checkout@v2
         with: 
-          repository: microsoft/python-package-template/
+          repository: microsoft/python-package-template
           ref: 'dciborow/pyproject'
       - uses: ./
         with:
@@ -47,7 +47,7 @@ jobs:
         run:  python -c "import sys; print(sys.version)"
       - uses: actions/checkout@v2
         with: 
-          repository: microsoft/python-package-template/
+          repository: microsoft/python-package-template
           ref: 'dciborow/pyproject'        
       - uses: ./
         with:
@@ -73,7 +73,7 @@ jobs:
         run:  python -c "import sys; print(sys.version)"
       - uses: actions/checkout@v2
         with: 
-          repository: microsoft/python-package-template/
+          repository: microsoft/python-package-template
           ref: 'dciborow/pyproject'        
       - uses: ./
         with:
