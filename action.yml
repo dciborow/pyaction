@@ -29,11 +29,6 @@ inputs:
     default: 'false'
   testing:
     description: |
-      Run Flake8
-      Default is all.
-    default: 'all'
-  testing:
-    description: |
       Run tests with PyTest
       Default is false.
     default: false
