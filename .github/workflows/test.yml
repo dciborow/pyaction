@@ -28,6 +28,14 @@ jobs:
       # Test the action with no enabled steps.
       - name: NoOps
         uses: ./pyaction
+        with:
+          black: false
+          bandit: false
+          pylint: false
+          pyright: false
+          pytest: false
+          pypi_publish: false
+          pypi_custom_pubish: false
 
       # Test the action with all enabled steps.
       - name: All Ops
