@@ -139,7 +139,8 @@ runs:
         python -m pytest '${{ inputs.pytest_markers }}' tests
       shell: bash
 
-    - uses: actions/setup-python@v2.2.2
+    - if: ${{ inputs.pypi_publish || inputs.pypi_custom_publish }}
+      uses: actions/setup-python@v2.2.2
       with:
         python-version: 3.7
     - if: ${{ inputs.pypi_publish || inputs.pypi_custom_publish }}
