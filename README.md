@@ -1,4 +1,4 @@
-# action-pylint
+# python-action
 [![Test](https://github.com/dciborow/action-pylint/workflows/Test/badge.svg)](https://github.com/dciborow/action-pylint/actions?query=workflow%3ATest)
 [![reviewdog](https://github.com/dciborow/action-pylint/workflows/reviewdog/badge.svg)](https://github.com/dciborow/action-pylint/actions?query=workflow%3Areviewdog)
 [![depup](https://github.com/dciborow/action-pylint/workflows/depup/badge.svg)](https://github.com/dciborow/action-pylint/actions?query=workflow%3Adepup)
@@ -6,24 +6,68 @@
 [![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/dciborow/action-pylint?logo=github&sort=semver)](https://github.com/dciborow/action-pylint/releases)
 [![action-bumpr supported](https://img.shields.io/badge/bumpr-supported-ff69b4?logo=github&link=https://github.com/haya14busa/action-bumpr)](https://github.com/haya14busa/action-bumpr)
 
-This repo contains a action to run [pylint](https://pypi.org/project/pylint).
+This repo contains a action to run various Python tools including:
+- [bandit](https://pypi.org/project/bandit)
+- [pylint](https://pypi.org/project/pylint)
+- [pyright](https://pypi.org/project/pyright)
+- [pytest](https://pypi.org/project/pytest)
 
 ## Input
 
 ```yaml
 inputs:
+  black:
+    description: |
+      Run Black
+      Default is false.
+    default: false
+  bandit:
+    description: |
+      Run Bandit
+      Default is false.
+    default: false
+  pylint:
+    description: |
+      Run Pylint
+      Default is false.
+    default: false
+  pyright:
+    description: |
+      Run Pyright
+      Default is false.
+    default: false
+  flake8:
+    description: |
+      Run Flake8
+      Default is false.
+    default: false
+  testing:
+    description: |
+      Run tests with PyTest
+      Default is false.
+    default: false
+  publish:
+    description: |
+      Publish to PyPi
+      Default is false
+    default: false
+  publish_url:
+    description: |
+      PyPi Target. Use this to point to private or test locations.      
+      Default https://pypi.org
+    defualt: 'https://pypi.org'
   github_token:
     description: 'GITHUB_TOKEN'
     default: '${{ github.token }}'
   workdir:
     description: 'Working directory relative to the root directory.'
-    default: '.'
+    default: 'src'
   ### Flags for reviewdog ###
   level:
     description: 'Report level for reviewdog [info,warning,error]'
     default: 'error'
   reporter:
-    description: 'Reporter of reviewdog command [github-pr-check,github-check,github-pr-review].'
+    description: 'Reporter of reviewdog command [github-pr-check,github-pr-review].'
     default: 'github-pr-check'
   filter_mode:
     description: |
@@ -38,24 +82,63 @@ inputs:
   reviewdog_flags:
     description: 'Additional reviewdog flags'
     default: ''
+  toml:
+    description: |
+      pyproject.toml location.
+      Default pyproject.toml
+    default: 'pyproject.toml'
+  pylint_rc:
+    description: '.pylintrc configuration file'
+    default: '.pylintrc'
 ```
 
 ## Usage
 
 ```yaml
-name: Python
-on: [pull_request]
+name: Pull Request
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
 jobs:
   linting:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: dciborow/pyaction@v1
+      - name: Black
+        uses: dciborow/pyaction@0.0.13
+        with:
+          black: true
+
+      - name: Bandit
+        uses: dciborow/pyaction@0.0.13
+        with:          
+          bandit: true
+
+      - name: Pylint
+        uses: dciborow/pyaction@0.0.13
         with:
           pylint: true
-          bandit: true
-          flake8: true
+          
+      - name: Pyright
+        uses: dciborow/pyaction@0.0.13
+        with:          
           pyright: true
+          
+      - name: Flake8
+        uses: dciborow/pyaction@0.0.13
+        with:          
+          flake8: true
+
+  testing:
+    runs-on: ubuntu-latest
+    steps:    
+      - name: Pytest
+        uses: dciborow/pyaction@0.0.13
+        with:          
+          testing: true
 ```
 
 ## Development
@@ -70,22 +153,3 @@ Pushing tag manually by yourself also work.
 
 This action updates major/minor release tags on a tag push. e.g. Update v1 and v1.2 tag when released v1.2.3.
 ref: https://help.github.com/en/articles/about-actions#versioning-your-action
-
-### Lint - reviewdog integration
-
-This reviewdog action template itself is integrated with reviewdog to run lints
-which is useful for Docker container based actions.
-
-![reviewdog integration](https://user-images.githubusercontent.com/3797062/72735107-7fbb9600-3bde-11ea-8087-12af76e7ee6f.png)
-
-Supported linters:
-
-- [reviewdog/action-shellcheck](https://github.com/reviewdog/action-shellcheck)
-- [reviewdog/action-hadolint](https://github.com/reviewdog/action-hadolint)
-- [reviewdog/action-misspell](https://github.com/reviewdog/action-misspell)
-
-### Dependencies Update Automation
-This repository uses [reviewdog/action-depup](https://github.com/reviewdog/action-depup) to update
-reviewdog version.
-
-[![reviewdog depup demo](https://user-images.githubusercontent.com/3797062/73154254-170e7500-411a-11ea-8211-912e9de7c936.png)](https://github.com/reviewdog/action-template/pull/6)
