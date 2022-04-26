@@ -5,28 +5,28 @@ inputs:
   black:
     description: |
       Run Black
-      Default is true.
-    default: 'true'
+      Default is false.
+    default: 'false'
   bandit:
     description: |
       Run Bandit
-      Default is ture.
-    default: 'true'
+      Default is false.
+    default: 'false'
   pylint:
     description: |
       Run Pylint
-      Default is true.
-    default: 'true'
+      Default is false.
+    default: 'false'
   pyright:
     description: |
       Run Pyright
-      Default is true.
-    default: 'true'
+      Default is false.
+    default: 'false'
   flake8:
     description: |
       Run Flake8
-      Default is true.
-    default: 'true'
+      Default is false.
+    default: 'false'
   testing:
     description: |
       Run Flake8
@@ -81,9 +81,6 @@ runs:
   steps:
     - uses: actions/checkout@v2
 
-    - run: |
-          echo "::group::Black"
-      shell: bash          
     - name: Black
       if: ${{ inputs.black }} == 'true'
       uses: rickstaa/action-black@v1
@@ -96,42 +93,27 @@ runs:
       with:
         tool_name: blackfmt
         fail_on_error: true
-    - run: |
-          echo "::endgroup::"
-          echo "::group::Bandit"
-      shell: bash
+
     - if: ${{ inputs.bandit }} == 'true'
       uses: jpetrucciani/bandit-check@1.6.2
-    - run: |
-          echo "::endgroup::"
-          echo "::group::Flake8"
-      shell: bash          
+    
     - if: ${{ inputs.flake8 }} == 'true'
       uses: reviewdog/action-flake8@v3
       with:
         github_token: ${{ inputs.github_token }}
         workdir: ${{ inputs.workdir }}
-    - run: |
-          echo "::endgroup::"
-          echo "::group::Pylint"
-      shell: bash          
+    
     - if: ${{ inputs.pylint }} == 'true'
       uses: dciborow/action-pylint@0.0.3
       with:
         github_token: ${{ inputs.github_token }}
         workdir: ${{ inputs.workdir }}
-    - run: |
-          echo "::endgroup::"
-          echo "::group::Pyright"
-      shell: bash          
+    
     - name: Pyright
       if: ${{ inputs.pyright }} == 'true'
       uses: jakebailey/pyright-action@v1.1.0
       with:
         project: ${{ inputs.toml }}
-    - run: |
-          echo "::endgroup::"
-      shell: bash          
 
 # Ref: https://haya14busa.github.io/github-action-brandings/
 branding:
