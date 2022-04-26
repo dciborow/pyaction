@@ -79,19 +79,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-#     - run: $GITHUB_ACTION_PATH/entrypoint.sh
-#       shell: bash
-#       env:
-#         INPUT_WORKDIR: ${{ inputs.workdir }}
-#         INPUT_FLAKE8_ARGS: ${{ inputs.flake8_Args }}
-#         INPUT_GITHUB_TOKEN: ${{ inputs.github_token }}
-#         INPUT_TOOL_NAME: ${{ inputs.tool_name }}
-#         INPUT_LEVEL: ${{ inputs.level }}
-#         INPUT_REPORTER: ${{ inputs.reporter }}
-#         INPUT_FILTER_MODE: ${{ inputs.filter_mode }}
-#         INPUT_FAIL_ON_ERROR: ${{ inputs.fail_on_error }}
-#         INPUT_REVIEWDOG_FLAGS: ${{ inputs.reviewdog_flags }}
-#         INPUT_PYLINT_RC: ${{ inputs.pylint_rc }}
     - name: Black
       if: ${{ inputs.black }} == 'true'
       uses: rickstaa/action-black@v1
@@ -103,7 +90,7 @@ runs:
       uses: reviewdog/action-suggester@v1
       with:
         tool_name: blackfmt
-        fail_on_error: true      
+        fail_on_error: true
     - name: Bandit
       if: ${{ inputs.bandit }} == 'true'
       uses: jpetrucciani/bandit-check@1.6.2
@@ -111,17 +98,17 @@ runs:
       if: ${{ inputs.flake8 }} == 'true'
       uses: reviewdog/action-flake8@v3
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}   
+        github_token: ${{ inputs.github_token }}
         workdir: ${{ inputs.workdir }}
     - name: Pylint
-      if: ${{ inputs.pylint }} == 'true'    
-      uses: dciborow/action-pylint@0.0.3        
+      if: ${{ inputs.pylint }} == 'true'
+      uses: dciborow/action-pylint@0.0.3
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }} 
-        workdir: ${{ inputs.workdir }}          
+        github_token: ${{ inputs.github_token }}
+        workdir: ${{ inputs.workdir }}
     - name: Pyright
-      if: ${{ inputs.pyright }} == 'true'    
-      uses: jakebailey/pyright-action@v1.1.0        
+      if: ${{ inputs.pyright }} == 'true'
+      uses: jakebailey/pyright-action@v1.1.0
       with:
         project: ${{ inputs.toml }}
 
