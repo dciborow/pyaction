@@ -154,6 +154,9 @@ runs:
     - if: ${{ inputs.pypi_publish == 'true' || inputs.pypi_custom_publish == 'true' }}
       run: |
         cd "${{ inputs.root }}"
+        pwd
+        ls
+
         python -m pip install --upgrade pip
         python -m pip install flit
 
