@@ -164,7 +164,7 @@ runs:
           repository="--repository ${{ inputs.pypi_repo }}"
         fi
 
-        python -m flit publish $repository
+        python -m flit publish $repository --pypirc .pypirc
       env:
         FLIT_USERNAME: __token__
         FLIT_PASSWORD: ${{ inputs.pypi_password }}
