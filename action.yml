@@ -55,7 +55,7 @@ inputs:
   args:
     description: |
       Customize which tests run with Pytest Markers
-    default: '-m not integration and not gpu'
+    default: ''
   pypi_repo:
     description: |
       PyPi Target. Use this to point to private or test locations.      
