@@ -146,10 +146,6 @@ runs:
         python -m pip install pytest flit
         cd "${{ inputs.root }}"
         python -m flit install
-      shell: bash
-    - if: ${{ inputs.pytest == 'true' }}
-      run: |
-        cd "${{ inputs.root }}"
         python -m pytest '${{ inputs.pytest_markers }}' tests
       shell: bash
 
