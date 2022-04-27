@@ -113,23 +113,24 @@ runs:
 
     - if: ${{ inputs.bandit  == 'true' }}
       uses: jpetrucciani/bandit-check@1.6.2
-    
+        path: ${{ inputs.root }}
+
     - if: ${{ inputs.flake8  == 'true' }}
       uses: reviewdog/action-flake8@v3
       with:
         github_token: ${{ inputs.github_token }}
-        workdir: ${{ inputs.workdir }}
-    
+        workdir: ${{ inputs.root }}/${{ inputs.workdir }}
+
     - if: ${{ inputs.pylint == 'true' }}
       uses: dciborow/action-pylint@0.0.3
       with:
         github_token: ${{ inputs.github_token }}
-        workdir: ${{ inputs.workdir }}
-    
+        workdir: ${{ inputs.root }}/${{ inputs.workdir }}
+
     - if: ${{ inputs.pyright == 'true' }}
       uses: jakebailey/pyright-action@v1.1.0
       with:
-        project: ${{ inputs.toml }}
+        project: ${{ inputs.root }}/${{ inputs.toml }}
 
     - if: ${{ inputs.pytest == 'true' }}
       uses: actions/setup-python@v1
@@ -158,7 +159,7 @@ runs:
         cd "${{ inputs.root }}"
         python -m pip install --upgrade pip
         python -m pip install flit
-        
+
         if ${{ inputs.pypi_custom_publish }}; then
           repository="--repository ${{ inputs.pypi_repo }}"
         fi
