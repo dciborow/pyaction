@@ -52,10 +52,10 @@ inputs:
     default: false
 
   # Advanced Settings
-  pytest_markers:
+  args:
     description: |
       Customize which tests run with Pytest Markers
-    default: '-m not integration and not gpu'
+    default: ''
   pypi_repo:
     description: |
       PyPi Target. Use this to point to private or test locations.      
@@ -146,7 +146,7 @@ runs:
         python -m pip install pytest flit
         cd "${{ inputs.root }}"
         python -m flit install
-        python -m pytest '${{ inputs.pytest_markers }}' tests
+        python -m pytest '${{ inputs.args }}' tests
       shell: bash
 
     - if: ${{ inputs.pypi_publish == 'true' }}
