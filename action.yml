@@ -114,9 +114,9 @@ runs:
         fail_on_error: true
 
     - if: ${{ inputs.bandit  == 'true' }}
-      uses: jpetrucciani/bandit-check@1.6.2
+      uses: dciborow/action-bandit@0.0.2
       with:
-        path: ${{ inputs.root }}
+        workdir: ${{ inputs.root }}
 
     - if: ${{ inputs.flake8  == 'true' }}
       uses: reviewdog/action-flake8@v3
