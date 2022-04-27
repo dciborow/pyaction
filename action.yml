@@ -50,11 +50,6 @@ inputs:
       Publish to PyPi
       Default is false
     default: false
-  pypi_custom_publish:
-    description: |
-      Publish to PyPi
-      Default is false
-    default: false
 
   # Advanced Settings
   pytest_markers:
@@ -65,7 +60,7 @@ inputs:
     description: |
       PyPi Target. Use this to point to private or test locations.      
       Default testpypi
-    default: 'testpypi'
+    default: 'pypi'
   pypi_password: 
     description: |
       Credentials for PyPi
@@ -151,20 +146,14 @@ runs:
         python -m pytest '${{ inputs.pytest_markers }}' tests
       shell: bash
 
-    - if: ${{ inputs.pypi_publish == 'true' || inputs.pypi_custom_publish == 'true' }}
+    - if: ${{ inputs.pypi_publish == 'true' }}
       run: |
         cd "${{ inputs.root }}"
-        pwd
-        ls
 
         python -m pip install --upgrade pip
         python -m pip install flit
 
-        if ${{ inputs.pypi_custom_publish }}; then
-          repository="--repository ${{ inputs.pypi_repo }}"
-        fi
-
-        python -m flit publish $repository --pypirc .pypirc
+        python -m flit publish $repository --repository ${{ inputs.pypi_repo }} --pypirc .pypirc
       env:
         FLIT_USERNAME: __token__
         FLIT_PASSWORD: ${{ inputs.pypi_password }}
