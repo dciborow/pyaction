@@ -134,11 +134,10 @@ runs:
         working-directory: ${{ inputs.root }}
         project: ${{ inputs.toml }}
 
-    - if: ${{ inputs.pytest == 'true' }}
+    - if: ${{ inputs.pytest == 'true' || inputs.pypi_publish  == 'true' }}
       uses: actions/setup-python@v1
       with:
-        python-version: '3.x'
-        cache: 'pip'
+        python-version: '3.7'
     - if: ${{ inputs.pytest == 'true' }}
       run: |
         python -m pip install --upgrade pip
@@ -152,10 +151,6 @@ runs:
         python -m pytest '${{ inputs.pytest_markers }}' tests
       shell: bash
 
-    - if: ${{ inputs.pypi_publish  == 'true' }}
-      uses: actions/setup-python@v2.2.2
-      with:
-        python-version: 3.7
     - if: ${{ inputs.pypi_publish == 'true' || inputs.pypi_custom_publish == 'true' }}
       run: |
         cd "${{ inputs.root }}"
