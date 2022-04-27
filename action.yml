@@ -3,6 +3,11 @@ description: 'Run actions for Python Project on pull requests to improve code re
 author: 'dciborow'
 inputs:
   # Python Project Configuration is expected to be in a pyproject.toml
+  root:
+    description: |
+      Project root directory.
+      Default '.'
+    default: '.'
   toml:
     description: |
       pyproject.toml location.
@@ -99,7 +104,7 @@ runs:
       uses: rickstaa/action-black@v1
       id: action_black
       with:
-        black_args: "--config ${{ inputs.toml }} ${{ inputs.workdir }}"
+        black_args: "--config ${{ inputs.root }}/${{ inputs.toml }} ${{ inputs.root }}/${{ inputs.workdir }} ${{ inputs.root }}/tests"
     - if: steps.action_black.outputs.is_formatted == 'true'
       uses: reviewdog/action-suggester@v1
       with:
@@ -108,54 +113,58 @@ runs:
 
     - if: ${{ inputs.bandit  == 'true' }}
       uses: jpetrucciani/bandit-check@1.6.2
-    
+      with:
+        path: ${{ inputs.root }}
+
     - if: ${{ inputs.flake8  == 'true' }}
       uses: reviewdog/action-flake8@v3
       with:
         github_token: ${{ inputs.github_token }}
-        workdir: ${{ inputs.workdir }}
-    
+        workdir: ${{ inputs.root }}/${{ inputs.workdir }}
+
     - if: ${{ inputs.pylint == 'true' }}
-      uses: dciborow/action-pylint@0.0.3
+      uses: dciborow/action-pylint@0.0.4
       with:
         github_token: ${{ inputs.github_token }}
-        workdir: ${{ inputs.workdir }}
-    
+        workdir: ${{ inputs.root }}/${{ inputs.workdir }}
+
     - if: ${{ inputs.pyright == 'true' }}
       uses: jakebailey/pyright-action@v1.1.0
       with:
+        working-directory: ${{ inputs.root }}
         project: ${{ inputs.toml }}
 
-    - if: ${{ inputs.pytest == 'true' }}
+    - if: ${{ inputs.pytest == 'true' || inputs.pypi_publish  == 'true' }}
       uses: actions/setup-python@v1
       with:
-        python-version: '3.x'
-        cache: 'pip'
+        python-version: '3.7'
     - if: ${{ inputs.pytest == 'true' }}
       run: |
         python -m pip install --upgrade pip
         python -m pip install pytest flit
+        cd "${{ inputs.root }}"
         python -m flit install
       shell: bash
     - if: ${{ inputs.pytest == 'true' }}
       run: |
+        cd "${{ inputs.root }}"
         python -m pytest '${{ inputs.pytest_markers }}' tests
       shell: bash
 
-    - if: ${{ inputs.pypi_publish  == 'true' }}
-      uses: actions/setup-python@v2.2.2
-      with:
-        python-version: 3.7
-    - if: ${{ inputs.pypi_publish == 'true' }}
+    - if: ${{ inputs.pypi_publish == 'true' || inputs.pypi_custom_publish == 'true' }}
       run: |
+        cd "${{ inputs.root }}"
+        pwd
+        ls
+
         python -m pip install --upgrade pip
         python -m pip install flit
-        
+
         if ${{ inputs.pypi_custom_publish }}; then
           repository="--repository ${{ inputs.pypi_repo }}"
         fi
 
-        python -m flit publish $repository
+        python -m flit publish $repository --pypirc .pypirc
       env:
         FLIT_USERNAME: __token__
         FLIT_PASSWORD: ${{ inputs.pypi_password }}
