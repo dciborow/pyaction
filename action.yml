@@ -65,6 +65,13 @@ inputs:
     description: |
       Credentials for PyPi
     default: ''
+  version_suffix:
+    description: |
+      Value to append to version in order to produce unique id for PyPi.
+      Examples include: 
+        '-rc {{ github.run_attempt }}'
+        '-dev {{ github.run_attempt }}'
+    default: ''
   github_token:
     description: 'GITHUB_TOKEN'
     default: '${{ github.token }}'
@@ -139,10 +146,6 @@ runs:
         python -m pip install pytest flit
         cd "${{ inputs.root }}"
         python -m flit install
-      shell: bash
-    - if: ${{ inputs.pytest == 'true' }}
-      run: |
-        cd "${{ inputs.root }}"
         python -m pytest '${{ inputs.pytest_markers }}' tests
       shell: bash
 
@@ -152,7 +155,8 @@ runs:
 
         python -m pip install --upgrade pip
         python -m pip install flit
-
+        
+        sed -i -r 's/[0-9]\.[0-9]\.[0-9]+/&${{ inputs.version_suffix }}/g' src/*/__init__.py
         python -m flit publish $repository --repository ${{ inputs.pypi_repo }} --pypirc .pypirc
       env:
         FLIT_USERNAME: __token__
