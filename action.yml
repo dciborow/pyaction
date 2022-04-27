@@ -69,8 +69,8 @@ inputs:
     description: |
       Value to append to version in order to produce unique id for PyPi.
       Examples include: 
-        '-rc${{ github.run_attempt }}'
-        '-dev${{ github.run_attempt }}'
+        '-rc {{ github.run_attempt }}'
+        '-dev {{ github.run_attempt }}'
     default: ''
   github_token:
     description: 'GITHUB_TOKEN'
