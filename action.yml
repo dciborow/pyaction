@@ -130,7 +130,8 @@ runs:
     - if: ${{ inputs.pyright == 'true' }}
       uses: jakebailey/pyright-action@v1.1.0
       with:
-        project: ${{ inputs.root }}/${{ inputs.toml }}
+        working-directory: ${{ inputs.root }}
+        project: ${{ inputs.toml }}
 
     - if: ${{ inputs.pytest == 'true' }}
       uses: actions/setup-python@v1
