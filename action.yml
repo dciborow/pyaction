@@ -113,6 +113,7 @@ runs:
 
     - if: ${{ inputs.bandit  == 'true' }}
       uses: jpetrucciani/bandit-check@1.6.2
+      with:
         path: ${{ inputs.root }}
 
     - if: ${{ inputs.flake8  == 'true' }}
