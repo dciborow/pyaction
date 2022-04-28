@@ -49,6 +49,7 @@ jobs:
           pylint: true
           pyright: true
           pytest: true
+          tox: true
           pypi_publish: true
           pypi_repo: testpypi
           pypi_password: ${{ secrets.TEST_PYPI_PASSWORD  }}

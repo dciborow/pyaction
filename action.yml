@@ -45,6 +45,11 @@ inputs:
       Run tests with PyTest
       Default is false.
     default: false
+  tox:
+    description: |
+      Run tests with tox
+      Default is false.
+    default: false    
   pypi_publish:
     description: |
       Publish to PyPi
@@ -136,10 +141,19 @@ runs:
         working-directory: ${{ inputs.root }}
         project: ${{ inputs.toml }}
 
-    - if: ${{ inputs.pytest == 'true' || inputs.pypi_publish  == 'true' }}
+    - if: ${{ inputs.tox == 'true' || inputs.pytest == 'true' || inputs.pypi_publish  == 'true' }}
       uses: actions/setup-python@v1
       with:
         python-version: '3.7'
+
+    - if: ${{ inputs.tox == 'true' }}
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install tox
+        cd "${{ inputs.root }}"
+        python -m tox
+      shell: bash
+
     - if: ${{ inputs.pytest == 'true' }}
       run: |
         python -m pip install --upgrade pip
