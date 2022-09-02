@@ -130,31 +130,33 @@ runs:
         github_token: ${{ inputs.github_token }}
         workdir: ${{ inputs.root }}/${{ inputs.workdir }}
 
+    - if: ${{ inputs.pytest == 'true' || inputs.pypi_publish  == 'true' || inputs.pyright  == 'true'}}
+      uses: actions/setup-python@v1
+      with:
+        python-version: '3.7'
+
+    - if: ${{ inputs.pytest == 'true'  || inputs.pyright  == 'true'}}
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install pytest flit
+        cd "${{ inputs.root }}"
+        python -m flit install
+      shell: bash
+
     - if: ${{ inputs.pyright == 'true' }}
       uses: jakebailey/pyright-action@v1.1.0
       with:
         working-directory: ${{ inputs.root }}
         project: ${{ inputs.toml }}
 
-    - if: ${{ inputs.pytest == 'true' || inputs.pypi_publish  == 'true' }}
-      uses: actions/setup-python@v1
-      with:
-        python-version: '3.7'
     - if: ${{ inputs.pytest == 'true' }}
       run: |
-        python -m pip install --upgrade pip
-        python -m pip install pytest flit
-        cd "${{ inputs.root }}"
-        python -m flit install
         python -m pytest '${{ inputs.args }}' tests
       shell: bash
 
     - if: ${{ inputs.pypi_publish == 'true' }}
       run: |
         cd "${{ inputs.root }}"
-
-        python -m pip install --upgrade pip
-        python -m pip install flit
         
         sed -i -r 's/[0-9]\.[0-9]\.[0-9]+/&${{ inputs.version_suffix }}/g' src/*/__init__.py
         python -m flit publish $repository --repository ${{ inputs.pypi_repo }} --pypirc .pypirc
