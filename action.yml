@@ -133,7 +133,7 @@ runs:
     - if: ${{ inputs.pytest == 'true' || inputs.pypi_publish  == 'true' || inputs.pyright  == 'true'}}
       uses: actions/setup-python@v1
       with:
-        python-version: '3.7'
+        python-version: '3.10'
 
     - if: ${{ inputs.pytest == 'true'  || inputs.pyright  == 'true'}}
       run: |
