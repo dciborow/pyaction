@@ -103,10 +103,10 @@ runs:
   using: "composite"
   steps:
     - if: ${{ inputs.black == 'true' }}
-      uses: rickstaa/action-black@v1
+      uses: psf/black@stable
       id: action_black
       with:
-        black_args: "--config ${{ inputs.root }}/${{ inputs.toml }} ${{ inputs.root }}/${{ inputs.workdir }} ${{ inputs.root }}/tests"
+        options: "--config ${{ inputs.root }}/${{ inputs.toml }} ${{ inputs.root }}/${{ inputs.workdir }} ${{ inputs.root }}/tests"
     - if: steps.action_black.outputs.is_formatted == 'true'
       uses: reviewdog/action-suggester@v1
       with:
@@ -114,7 +114,7 @@ runs:
         fail_on_error: true
 
     - if: ${{ inputs.bandit  == 'true' }}
-      uses: dciborow/action-bandit@0.0.2
+      uses: dciborow/action-bandit@v1
       with:
         workdir: ${{ inputs.root }}
 
@@ -131,7 +131,7 @@ runs:
         workdir: ${{ inputs.root }}/${{ inputs.workdir }}
 
     - if: ${{ inputs.pytest == 'true' || inputs.pypi_publish  == 'true' || inputs.pyright  == 'true'}}
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@v4
       with:
         python-version: '3.11'
 
@@ -144,7 +144,7 @@ runs:
       shell: bash
 
     - if: ${{ inputs.pyright == 'true' }}
-      uses: jakebailey/pyright-action@v1.1.0
+      uses: jakebailey/pyright-action@v1
       with:
         working-directory: ${{ inputs.root }}
         project: ${{ inputs.toml }}
